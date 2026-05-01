@@ -3,53 +3,62 @@ const EUR = 5.85;
 const GBP = 6.75;
 
 const form = document.querySelector('form');
-const amount = document.getElementById('amount');
 const currency = document.getElementById('currency');
 const footer = document.querySelector('main footer');
 const description = document.getElementById('description');
+const result = document.getElementById('result');
+const amount = document.getElementById('amount');
 
-amount.addEventListener ('input',()=>{
+
+amount.addEventListener('input', ()=>{
+
     const hasCharacterRegex = /\D+/g;
-    amount.value = amount.value.replace(hasCharacterRegex,'');
+
+    amount.value = amount.value.replace(hasCharacterRegex, '');
+
 })
 
 form.onsubmit = (event)=>{
-    event.preventDefault()
+    event.preventDefault();
 
-    switch (currency.value) {
+    switch (currency.value){
         case 'USD':
-            convertCurrency(amount.value,USD, '$');
+            convertCurrency(amount.value, USD, '$');
             break;
         case 'EUR':
-            convertCurrency(amount.value,EUR, '€');
+            convertCurrency(amount.value, EUR, '€');
             break;
         case 'GBP':
-            convertCurrency(amount.value,GBP,'£');
+            convertCurrency(amount.value, GBP, '£');
             break;
     }
+
 }
 
+function convertCurrency (amount, price, symbol) {
 
+   try{
 
-function convertCurrency (amount,price,symbol) {
-    try {
+    footer.classList.add('show-result')
 
-        description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`
+    description.textContent = `${symbol} 1 = ${formatCurrencyBRL(price)}`
 
-        footer.classList.add('show-result')
+    let total = amount * price;
 
-    } catch(error) {
-        footer.classList.remove('show-result')
+    total = formatCurrencyBRL(total).replace('R$', "")
 
-        console.log(error);
+    result.textContent = `${total} Reais`
 
-        alert("Tente novamente mais tarde")
-    }
+   } catch (error){
+    footer.classList.remove('show-result')
+    console.error(error);
+    alert("Tente novamente mais tarde.");
+   }   
 }
 
 function formatCurrencyBRL (value) {
-    return Number(value).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    })
+    return value.toLocaleString('pt-BR', { 
+        style: 'currency', 
+        currency: 'BRL' 
+    });
 }
