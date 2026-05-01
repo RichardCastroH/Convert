@@ -160,3 +160,10 @@ footer h1 {
   line-height: 3rem;
   word-break: break-all;
 }
+
+
+@media (max-width: 500px) {
+  main {
+    width: 90%;
+  }
+}
